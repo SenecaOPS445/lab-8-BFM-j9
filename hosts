@@ -1,0 +1,5 @@
+[myvmlab]
+myvm ansible_host=myvmlab.senecapolytechnic.ca ansible_port=7479 ansible_user=student ansible_ssh_private_key_file=~/.ssh/id_rsa
+
+[ops445]
+vmlab   ansible_host=myvmlab.senecapolytechnic.ca ansible_port=7479 ansible_user=student ansible_ssh_private_key_file=~/.ssh/id_rsa
