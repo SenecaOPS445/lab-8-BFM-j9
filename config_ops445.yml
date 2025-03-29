@@ -1,0 +1,62 @@
+---
+- name: Configure OPS445 VM
+  hosts: vmlab
+  become: yes
+  tasks:
+
+    - name: Update Apache (httpd)
+      yum:
+        name: httpd
+        state: latest
+
+    - name: Install EPEL Repository
+      yum:
+        name: epel-release
+        state: present
+
+    - name: Remove 'tree' package
+      yum:
+        name: tree
+        state: absent
+
+    - name: Set Hostname to Seneca ID
+      hostname:
+        name: jowusu9
+
+    - name: Create New User (jowusu9)
+      user:
+        name: jowusu9
+        groups: wheel
+        append: yes
+        state: present
+        createhome: yes
+
+    - name: Allow sudo without password for jowusu9
+      copy:
+        dest: /etc/sudoers.d/jowusu9
+        content: "jowusu9 ALL=(ALL) NOPASSWD: ALL"
+        mode: 0440
+
+    - name: Setup SSH Key Authentication for jowusu9
+      authorized_key:
+        user: jowusu9
+        state: present
+        key: "{{ lookup('file', '/home/jowusu9/.ssh/id_rsa.pub') }}"
+
+    - name: Create Directory Structure for Labs
+      file:
+        path: "/home/jowusu9/ops445/lab{{ item }}"
+        state: directory
+        owner: jowusu9
+        group: jowusu9
+        mode: '0755'
+      with_items:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+
